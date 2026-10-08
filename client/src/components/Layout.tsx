@@ -4,10 +4,8 @@ import { Navbar } from '@/components/Navbar/Navbar'
 export function Layout() {
 	return (
 		<div className='flex flex-col min-h-screen'>
-			<header>
-				<Navbar />
-			</header>
-			<main className='grow'>
+			<Navbar />
+			<main className='flex flex-1'>
 				<Outlet />
 			</main>
 		</div>

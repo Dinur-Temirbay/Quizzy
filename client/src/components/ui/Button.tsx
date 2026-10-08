@@ -1,7 +1,7 @@
-export function Button({ children }: { children: React.ReactNode }) {
-	return (
-		<button className='bg-blue-500 text-white px-4 py-2 rounded-lg cursor-pointer'>
-			{children}
-		</button>
-	)
+import type { ButtonHTMLAttributes } from 'react'
+
+type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement>
+
+export function Button({ ...props }: ButtonProps) {
+	return <button {...props} />
 }

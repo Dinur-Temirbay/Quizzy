@@ -1,10 +1,20 @@
-import { Button } from '@/components/ui/Button'
+import { Link } from 'react-router'
 
 export function HomePage() {
 	return (
-		<div className='flex items-center justify-center h-screen gap-5'>
-			<Button>Create Game</Button>
-			<Button>Join Game</Button>
+		<div className='flex flex-1 items-center justify-center gap-5'>
+			<Link
+				to='/create-game'
+				className='bg-blue-500 text-white px-4 py-2 rounded-lg cursor-pointer'
+			>
+				Create Game
+			</Link>
+			<Link
+				to='/join-game'
+				className='bg-red-500 text-white px-4 py-2 rounded-lg cursor-pointer'
+			>
+				Join Game
+			</Link>
 		</div>
 	)
 }

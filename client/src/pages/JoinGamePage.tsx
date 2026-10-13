@@ -1,16 +1,17 @@
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Button } from '@/components/ui/Button'
+import { Button } from '@/components/ui/Button/Button'
+import { Input } from '@/components/ui/Input/Input'
+
+const schema = z.object({
+	pin: z.string().regex(/^\d{6}$/, 'PIN must be 6 digits'),
+	nickname: z.string().trim().min(2, 'Too short').max(15, 'Too long'),
+})
+
+type FormValues = z.infer<typeof schema>
 
 export function JoinGamePage() {
-	const schema = z.object({
-		pin: z.string().regex(/^\d{6}$/, 'PIN must be 6 digits'),
-		nickname: z.string().trim().min(2, 'Too short').max(20, 'Too long'),
-	})
-
-	type FormValues = z.infer<typeof schema>
-
 	const {
 		register,
 		handleSubmit,
@@ -22,23 +23,21 @@ export function JoinGamePage() {
 	const onSubmit = () => {}
 
 	return (
-		<div className='flex flex-1 items-center justify-center gap-5'>
+		<div className='flex flex-1 items-center justify-center'>
 			<form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-4'>
-				<input
+				<Input
 					{...register('pin')}
 					inputMode='numeric'
 					maxLength={6}
 					placeholder='Game PIN'
-					className='border border-gray-300 rounded-md py-2 px-4'
 				/>
 				{errors.pin && (
 					<p className='text-red-500 text-sm'>{errors.pin.message}</p>
 				)}
-				<input
+				<Input
 					{...register('nickname')}
 					maxLength={15}
 					placeholder='Player Name'
-					className='border border-gray-300 rounded-md py-2 px-4'
 				/>
 				{errors.nickname && (
 					<p className='text-red-500 text-sm'>{errors.nickname.message}</p>

@@ -1,4 +1,4 @@
-import { Room } from './types'
+import { Room } from '../types'
 
 export const rooms = new Map<string, Room>()
 

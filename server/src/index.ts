@@ -4,6 +4,7 @@ import dotenv from 'dotenv'
 import helmet from 'helmet'
 import { createServer } from 'node:http'
 import { Server } from 'socket.io'
+import { registerSocketHandlers } from './socket/socket'
 
 dotenv.config()
 
@@ -18,11 +19,7 @@ const io = new Server(server, {
 })
 
 io.on('connection', socket => {
-	console.log('a user connected')
-
-	socket.on('disconnect', () => {
-		console.log('user disconnected')
-	})
+	registerSocketHandlers(io, socket)
 })
 
 server.listen(process.env.PORT, () => {

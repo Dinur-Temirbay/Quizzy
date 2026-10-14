@@ -3,6 +3,9 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@/components/ui/Button/Button'
 import { Input } from '@/components/ui/Input/Input'
+import { socket } from '@/socket/socket'
+import type { SubmitHandler } from 'react-hook-form'
+import { useNavigate } from 'react-router'
 
 const schema = z.object({
 	pin: z.string().regex(/^\d{6}$/, 'PIN must be 6 digits'),
@@ -11,16 +14,38 @@ const schema = z.object({
 
 type FormValues = z.infer<typeof schema>
 
+type JoinResponse = { ok: true } | { ok: false; error: string }
+
 export function JoinGamePage() {
+	const navigate = useNavigate()
+
 	const {
 		register,
 		handleSubmit,
+		setError,
 		formState: { errors, isSubmitting },
 	} = useForm<FormValues>({
 		resolver: zodResolver(schema),
 	})
 
-	const onSubmit = () => {}
+	const onSubmit: SubmitHandler<FormValues> = async data => {
+		try {
+			socket.connect()
+			const res: JoinResponse = await socket
+				.timeout(5000)
+				.emitWithAck('join-room', data)
+
+			if (!res.ok) {
+				socket.disconnect()
+				setError('root', { message: res.error })
+				return
+			}
+			navigate(`/play/${data.pin}`)
+		} catch {
+			socket.disconnect()
+			setError('root', { message: 'Server not responding' })
+		}
+	}
 
 	return (
 		<div className='flex flex-1 items-center justify-center'>

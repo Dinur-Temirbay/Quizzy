@@ -1,3 +1,16 @@
+export interface Player {
+	id: string
+	socketId: string
+	nickname: string
+	score: number
+	isConnected: boolean
+}
+
+export interface PlayerAnswer {
+	answerId: string
+	at: numberhostSocketId
+}
+
 export interface Answer {
 	id: string
 	text: string
@@ -17,19 +30,15 @@ export interface Quiz {
 	questions: Question[]
 }
 
-export interface Player {
-	id: string
-	nickname: string
-	score: number
-}
-
 export type RoomStatus = 'lobby' | 'question' | 'results' | 'finished'
 
 export interface Room {
 	pin: string
-	hostId: string
+	hostSocketId: string
 	quiz: Quiz
-	players: Map<string, Player>
 	status: RoomStatus
+	players: Map<string, Player>
+	answers: Map<string, PlayerAnswer>
 	currentQuestionIndex: number
+	questionStartedAt: number | null
 }
